@@ -1,0 +1,58 @@
+# Global lists to store books and reservations
+books = []
+reservations = []
+
+# Function to add a new book to the library
+def add_book(title, author, isbn):
+    new_book = {'title': title, 'author': author, 'isbn': isbn, 'available': True}
+    books.append(new_book)
+    print("Book added successfully.")
+
+# Function to reserve a book
+def reserve_book(isbn, patron_name):
+    for book in books:
+        if book['isbn'] == isbn and book['available']:
+            book['available'] = False
+            reservations.append({'isbn': isbn, 'patron_name': patron_name, 'reserved_date': '2024-07-08'})  # Simulated reserved_date
+            print(f"Book reserved successfully for {patron_name}.")
+            return
+    print("Book not available for reservation.")
+
+# Function to generate a report for a book
+def generate_report(isbn):
+    for book in books:
+        if book['isbn'] == isbn:
+            print("Book Report:")
+            print(f"Title: {book['title']}")
+            print(f"Author: {book['author']}")
+            print(f"ISBN: {book['isbn']}")
+            print(f"Available: {'Yes' if book['available'] else 'No'}")
+            for reservation in reservations:
+                if reservation['isbn'] == isbn:
+                    print(f"Reserved by: {reservation['patron_name']}")
+            return
+    print("Book not found.")
+
+# Function to return a book
+def return_book(isbn):
+    for book in books:
+        if book['isbn'] == isbn:
+            book['available'] = True
+            reservations[:] = [r for r in reservations if r.get('isbn') != isbn]  # Remove all reservations for this book
+            print("Book returned successfully.")
+            return
+    print("Book not found.")
+
+#Example usage
+if __name__ == "__main__":
+    # Adding a new book
+    add_book("Fishing Man", "Florin Bumbar", "9876543210")
+    
+    # Reserving the book
+    reserve_book("9876543210", "Ion BFI")
+    
+    # Generating a report for the book
+    generate_report("9876543210")
+    
+    # Returning the book
+    return_book("9876543210")
